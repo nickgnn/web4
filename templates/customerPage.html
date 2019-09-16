@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Customer</title>
+</head>
+<body>
+
+<br>
+<p><a href="/">Home</a></p>
+
+<br>
+<p>List of cars: ${List}</p>
+
+<p>car_1: ${car_1}</p>
+<p>car_2: ${car_2}</p>
+<p>car_3: ${car_3}</p>
+<p>car_4: ${car_4}</p>
+<p>car_5: ${car_5}</p>
+
+
+<table style=" width: 400px; border: 4px double black;">
+    <tr>
+        <td style="border: 1px solid black; text-align: center">
+            <a>Form of buy a car</a>
+        </td>
+    </tr>
+
+    <table style=" width: 400px; border: 4px double black;">
+        <tr>
+            <td style="border: 1px solid black; text-align: center">
+                <br>
+                <form action="/customer" method="post">
+                    Brand: <input type="text" name="brand"/> <br> <br>
+                    Model: <input type="text" name="model"/> <br> <br>
+                    License plate: <input type="text" name="licensePlate"/> <br> <br>
+                    <input type="submit" value="Buy car"> <br> <br>
+                </form>
+            </td>
+        </tr>
+    </table>
+</table>
+
+
+
+</body>
+</html>
