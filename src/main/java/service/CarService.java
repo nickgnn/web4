@@ -24,15 +24,23 @@ public class CarService {
         return carService;
     }
 
-    public long addCar(String brand, String model, String licensePlate, Long price) {
-        return new CarDao(sessionFactory.openSession()).insertCar(brand, licensePlate, model, price);
+    public long addCar(Car car) {
+        return new CarDao(sessionFactory.openSession()).insertCar(car.getBrand(), car.getLicensePlate(), car.getModel(), car.getPrice());
     }
 
-    public List<Car> getAllCars() {
+    public List<Car> getAll() {
         return new CarDao(sessionFactory.openSession()).getAllCars();
     }
 
-//    public Car getByName(String name) {
-//        return new CarDao(sessionFactory.openSession())
-//    }
+    public Car getByName(String brand, String model, String licensePlate) {
+        return new CarDao(sessionFactory.openSession()).readByName(brand, model, licensePlate);
+    }
+
+    public void delete(Car car) {
+        new CarDao(sessionFactory.openSession()).deleteCar(car);
+    }
+
+    public void deleteAll() {
+        new CarDao(sessionFactory.openSession()).deleteAllCars();
+    }
 }

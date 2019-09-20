@@ -2,51 +2,63 @@ package servlet;
 
 import com.google.gson.Gson;
 import model.Car;
+import model.DailyReport;
 import service.CarService;
 import service.DailyReportService;
-import util.PageGenerator;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
 
 public class CustomerServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Map<String, Object> fields = new LinkedHashMap<>();
-        fields.put("List", "");
         Gson gson = new Gson();
-        List<Car> cars = CarService.getInstance().getAllCars();
-        String json = gson.toJson(cars);
+        String json = gson.toJson(CarService.getInstance().getAll());
 
-        for (int i = 0; i < cars.size(); i++) {
-            fields.put("car_" + cars.get(i).getId(), cars.get(i).getBrand() + " " + cars.get(i).getLicensePlate() + " " + cars.get(i).getModel() + " " + cars.get(i).getPrice());
-        }
-
-        resp.getWriter().println(PageGenerator.getInstance().getPage("customerPage.html", fields));
+        resp.getWriter().write(json);
 
         resp.setContentType("text/html;charset=utf-8");
         resp.setStatus(HttpServletResponse.SC_OK);
-
-
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Long price = Long.valueOf(req.getParameter("price"));
+        DailyReport dailyReport = DailyReportService.getInstance().getDailyReport();
+        String brand = req.getParameter("brand");
+        String model = req.getParameter("model");
+        String licensePlate = req.getParameter("licensePlate");
 
-//        long earnings =
-////        long soldCars =
-////
-////        DailyReportService.getInstance().addDailyReport();
-//
-//        DailyReportService.getInstance().addDailyReport()
-//        CarService.getInstance().
+        Car boughtCarByName = CarService.getInstance().getByName(brand, model, licensePlate);
+
+        System.out.println("\n\n" + boughtCarByName.getId() + '\n' + boughtCarByName.getModel() + '\n' + boughtCarByName.getBrand() + '\n' + boughtCarByName.getPrice() + '\n');
+
+        CarService.getInstance().delete(boughtCarByName);
+
+        System.out.println(dailyReport.getEarnings());
+        System.out.println(dailyReport.getSoldCars());
+
+        if (dailyReport.getEarnings() == null) {
+            dailyReport.setEarnings(boughtCarByName.getPrice());
+        } else {
+            dailyReport.setEarnings(dailyReport.getEarnings() + boughtCarByName.getPrice());
+        }
+
+        if (dailyReport.getSoldCars() == null) {
+            dailyReport.setSoldCars(1L);
+        } else {
+            dailyReport.setSoldCars(dailyReport.getSoldCars() + 1);
+        }
+
+        System.out.println("Earnings = " + dailyReport.getEarnings());
+        System.out.println("Sold cars = " + dailyReport.getSoldCars());
+
+        Gson gson = new Gson();
+        String json = gson.toJson(dailyReport);
+
+        resp.getWriter().write(json);
+        System.out.println(json);
     }
 }

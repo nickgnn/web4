@@ -31,4 +31,19 @@ public class DailyReportDao {
 
         return id;
     }
+
+    public void deleteReport (DailyReport dailyReport) {
+        Transaction transaction = session.beginTransaction();
+        session.delete(dailyReport);
+        transaction.commit();
+        session.close();
+    }
+
+    public void deleteAllReports() {
+        Transaction transaction = session.beginTransaction();
+        session.createQuery("DELETE FROM DailyReport").executeUpdate();
+
+        transaction.commit();
+        session.close();
+    }
 }

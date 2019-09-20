@@ -1,5 +1,6 @@
 package servlet;
 
+import model.Car;
 import service.CarService;
 import util.PageGenerator;
 
@@ -32,9 +33,11 @@ public class ProducerServlet extends HttpServlet {
         Map<String, Object> fields = new HashMap<>();
         fields.put("message", "");
 
+        Car car = new Car(brand, model, licensePlate, price);
+
         long id = -1;
 
-        if ((id = CarService.getInstance().addCar(brand, model, licensePlate, price)) != -1) {
+        if ((id = CarService.getInstance().addCar(car)) != -1) {
             fields.put("message", "Car added succesful");
             resp.setStatus(HttpServletResponse.SC_OK);
         } else {

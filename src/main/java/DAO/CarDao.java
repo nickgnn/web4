@@ -1,13 +1,10 @@
 package DAO;
 
 import model.Car;
-import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
 import java.util.List;
 
 public class CarDao {
@@ -36,15 +33,26 @@ public class CarDao {
         return id;
     }
 
-//    public Car readByName (String name) {
-//
-//        CriteriaBuilder builder = session.getCriteriaBuilder();
-//        CriteriaQuery<Car> criteriaQuery = builder.createQuery(Car.class);
-//
-//        criteriaQuery.from(Car.class);
-//        session.createQuery(criteriaQuery);
-//
-//        session.close();
-//        return
-//    }
+    public Car readByName (String brand, String model, String licensePlate) {
+        return (Car) session.createCriteria(Car.class)
+                .add(Restrictions.eq("brand",brand))
+                .add(Restrictions.eq("model", model))
+                .add(Restrictions.eq("licensePlate", licensePlate))
+                .uniqueResult();
+    }
+
+    public void deleteCar (Car car) {
+        Transaction transaction = session.beginTransaction();
+        session.delete(car);
+        transaction.commit();
+        session.close();
+    }
+
+    public void deleteAllCars() {
+        Transaction transaction = session.beginTransaction();
+        session.createQuery("DELETE FROM Car").executeUpdate();
+
+        transaction.commit();
+        session.close();
+    }
 }
