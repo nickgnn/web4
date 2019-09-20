@@ -8,6 +8,8 @@ import util.DBHelper;
 import java.util.List;
 
 public class DailyReportService {
+    private String json;
+
     private DailyReport dailyReport = new DailyReport();
 
     private static DailyReportService dailyReportService;
@@ -63,5 +65,13 @@ public class DailyReportService {
 
     public void deleteAll() {
         new DailyReportDao(sessionFactory.openSession()).deleteAllReports();
+    }
+
+    public String getJson() {
+        return json;
+    }
+
+    public void setJson(String json) {
+        this.json = json;
     }
 }
