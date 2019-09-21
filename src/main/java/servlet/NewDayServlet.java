@@ -22,8 +22,8 @@ public class NewDayServlet extends HttpServlet {
 
         DailyReportService.getInstance().addDailyReport(dailyReport);
 
-//        System.out.println(dailyReport.getEarnings());
-//        System.out.println(dailyReport.getSoldCars());
+        System.out.println(dailyReport.getEarnings());
+        System.out.println(dailyReport.getSoldCars());
 
         DailyReportService.getInstance().getDailyReport().setSoldCars(0L);
         DailyReportService.getInstance().getDailyReport().setEarnings(0L);
