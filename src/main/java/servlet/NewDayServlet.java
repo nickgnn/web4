@@ -27,6 +27,7 @@ public class NewDayServlet extends HttpServlet {
 
         DailyReportService.getInstance().getDailyReport().setSoldCars(0L);
         DailyReportService.getInstance().getDailyReport().setEarnings(0L);
-        DailyReportService.getInstance().setJson("{\"earnings\":0,\"soldCars\":0}");
+
+        DailyReportService.getInstance().setJson(gson.toJson(DailyReportService.getInstance().getDailyReport()));
     }
 }
